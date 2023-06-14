@@ -1,5 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
+
 const expensesSlice = createSlice({
   name: "expenses",
   initialState: {
@@ -34,12 +36,30 @@ const expensesSlice = createSlice({
         amount: 18.59,
         date: new Date("2022-02-18"),
       },
+      {
+        id: "e6",
+        description: "Another book1",
+        amount: 18.59,
+        date: new Date("2023-06-13"),
+      },
+      {
+        id: "e7",
+        description: "Another book2",
+        amount: 18.59,
+        date: new Date("2023-06-12"),
+      },
+      {
+        id: "e8",
+        description: "Another book3",
+        amount: 18.59,
+        date: new Date("2023-06-11"),
+      },
     ],
   },
   reducers: {
     removeExpenses: (state, action) => {
       state.expenses = state.expenses.filter(
-        (expense) => expense.id !== action.payload.id
+        (expense) => expense.id !== action.payload
       );
     },
     addExpenses: (state, action) => {
@@ -52,6 +72,7 @@ const expensesSlice = createSlice({
       state.expenses.push(action.payload);
     },
   },
+
 });
 
 export const removeExpenses = expensesSlice.actions.removeExpenses;

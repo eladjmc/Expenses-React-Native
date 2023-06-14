@@ -1,11 +1,10 @@
-import { Text } from 'react-native'
+import { useSelector } from 'react-redux';
 import ExpensesOutput from '../components/ExpensesOutput/ExpensesOutput'
-import { useSelector } from 'react-redux'
 
 const AllExpenses = () => {
-
+  const expensesList = useSelector((state)=>state.expensesReducer.expenses);
   return (
-    <ExpensesOutput expensesPeriod="Total"/>
+    <ExpensesOutput expenses={expensesList} expensesPeriod="Total"/>
 
   )
 }

@@ -3,11 +3,20 @@ import { StyleSheet, View } from "react-native";
 import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../constants/style";
 import Button from "../components/UI/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { removeExpenses } from "../store/expenses";
+import { getDefaultMiddleware } from '@reduxjs/toolkit';
+
+const customizedMiddleware = getDefaultMiddleware({
+  serializableCheck: false
+})
 
 const ManageExpenses = ({ route, navigation }) => {
   const editedExpenseId = route.params?.expenseId;
   const isEditing = !!editedExpenseId;
 
+  const allExpenses = useSelector((state) => state.expensesReducer.expenses);
+  const dispatch = useDispatch();
   useLayoutEffect(() => {
     navigation.setOptions({
       title: isEditing ? "Edit Expense" : "Add Expense",
@@ -15,6 +24,7 @@ const ManageExpenses = ({ route, navigation }) => {
   }, [navigation, isEditing]);
 
   const deleteExpenseHandler = () => {
+    dispatch(removeExpenses(editedExpenseId));
     navigation.goBack();
   };
 

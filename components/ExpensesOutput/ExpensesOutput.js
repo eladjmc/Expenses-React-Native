@@ -3,14 +3,13 @@ import { StyleSheet, View } from "react-native";
 import ExpensesSummary from "./ExpensesSummary";
 import ExpensesList from "./ExpensesList";
 import { GlobalStyles } from "../../constants/style";
-import { useSelector } from "react-redux";
 
 const ExpensesOutput = ({ expenses, expensesPeriod }) => {
-  const expensesList = useSelector((state)=>state.expensesReducer.expenses);
+  
   return (
     <View style={styles.container}>
-      <ExpensesSummary expenses={expensesList} periodName={expensesPeriod} />
-      <ExpensesList expenses={expensesList} />
+      <ExpensesSummary expenses={expenses} periodName={expensesPeriod} />
+      <ExpensesList expenses={expenses} />
     </View>
   );
 };
