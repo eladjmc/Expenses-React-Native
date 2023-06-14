@@ -4,12 +4,7 @@ import IconButton from "../components/UI/IconButton";
 import { GlobalStyles } from "../constants/style";
 import Button from "../components/UI/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { removeExpenses } from "../store/expenses";
-import { getDefaultMiddleware } from '@reduxjs/toolkit';
-
-const customizedMiddleware = getDefaultMiddleware({
-  serializableCheck: false
-})
+import { addExpenses, editExpenses, removeExpenses } from "../store/expenses";
 
 const ManageExpenses = ({ route, navigation }) => {
   const editedExpenseId = route.params?.expenseId;
@@ -33,6 +28,22 @@ const ManageExpenses = ({ route, navigation }) => {
   };
 
   const confirmHandler = () => {
+    if (isEditing) {
+      dispatch(
+        editExpenses({
+          id: editedExpenseId ,
+          description: "Dummy",
+          amount: 59.99,
+        })
+      );
+    } else {
+      dispatch(
+        addExpenses({
+          description: "A pair of shoes",
+          amount: 59.99,
+        })
+      );
+    }
     navigation.goBack();
   };
 

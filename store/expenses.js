@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
-
 const expensesSlice = createSlice({
   name: "expenses",
   initialState: {
@@ -63,16 +61,26 @@ const expensesSlice = createSlice({
       );
     },
     addExpenses: (state, action) => {
+      action.payload.id = "e" + Math.random();
+      action.payload.date = new Date();
       state.expenses.push(action.payload);
     },
     editExpenses: (state, action) => {
-      state.expenses = state.expenses.filter(
-        (expense) => expense.id !== action.payload.id
-      );
-      state.expenses.push(action.payload);
+      const changedExpense = state.expenses.map((expense) => {
+        if (expense.id === action.payload.id) {
+          return {
+            id: action.payload.id,
+            description: action.payload.description,
+            date: expense.date,
+            amount: action.payload.amount,
+          };
+        } else {
+          return expense;
+        }
+      });
+      state.expenses = changedExpense;
     },
   },
-
 });
 
 export const removeExpenses = expensesSlice.actions.removeExpenses;
