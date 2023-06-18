@@ -1,15 +1,27 @@
 import { StyleSheet, Text, View } from "react-native";
 import { GlobalStyles } from "../../constants/style";
-
+import { useEffect, useState } from "react";
 
 const ExpensesSummary = ({ periodName, expenses }) => {
-  const sumExpenses = expenses.reduce(
-    (sum, current) => sum + current.amount,
-    0
-  );
+  const [sumOfExpenses, setSumOfExpenses] = useState(0);
+
+  function customToFixed(number, precision) {
+    const factor = Math.pow(10, precision);
+    return Math.round(number * factor) / factor;
+  }
+
+  useEffect(() => {
+    setSumOfExpenses(
+      customToFixed(
+        expenses.reduce((sum, current) => sum + current.amount, 0),
+        2
+      )
+    );
+  }, [expenses]);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.sum}>${sumExpenses.toFixed(2)}</Text>
+      <Text style={styles.sum}>{sumOfExpenses}</Text>
       <Text style={styles.period}>{periodName}</Text>
     </View>
   );

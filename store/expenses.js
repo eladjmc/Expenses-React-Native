@@ -62,7 +62,6 @@ const expensesSlice = createSlice({
     },
     addExpenses: (state, action) => {
       action.payload.id = "e" + Math.random();
-      action.payload.date = new Date();
       state.expenses.push(action.payload);
     },
     editExpenses: (state, action) => {
@@ -71,7 +70,7 @@ const expensesSlice = createSlice({
           return {
             id: action.payload.id,
             description: action.payload.description,
-            date: expense.date,
+            date: action.payload.date,
             amount: action.payload.amount,
           };
         } else {

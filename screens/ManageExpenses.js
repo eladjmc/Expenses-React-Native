@@ -5,12 +5,14 @@ import { GlobalStyles } from "../constants/style";
 import Button from "../components/UI/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { addExpenses, editExpenses, removeExpenses } from "../store/expenses";
+import ExpenseForm from "../components/ManageExpense/ExpenseForm";
 
 const ManageExpenses = ({ route, navigation }) => {
   const editedExpenseId = route.params?.expenseId;
   const isEditing = !!editedExpenseId;
 
   const allExpenses = useSelector((state) => state.expensesReducer.expenses);
+  const selectedExpense = allExpenses.find((exp) => exp.id === editedExpenseId);
   const dispatch = useDispatch();
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -27,36 +29,24 @@ const ManageExpenses = ({ route, navigation }) => {
     navigation.goBack();
   };
 
-  const confirmHandler = () => {
+  const confirmHandler = (data) => {
     if (isEditing) {
-      dispatch(
-        editExpenses({
-          id: editedExpenseId ,
-          description: "Dummy",
-          amount: 59.99,
-        })
-      );
+      dispatch(editExpenses(data));
     } else {
-      dispatch(
-        addExpenses({
-          description: "A pair of shoes",
-          amount: 59.99,
-        })
-      );
+      dispatch(addExpenses(data));
     }
     navigation.goBack();
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.buttons}>
-        <Button style={styles.button} mode="flat" onPress={cancelHandler}>
-          Cancel
-        </Button>
-        <Button style={styles.button} onPress={confirmHandler}>
-          {isEditing ? "Update" : "Add"}
-        </Button>
-      </View>
+      <ExpenseForm
+        confirmHandler={confirmHandler}
+        cancelHandler={cancelHandler}
+        editedExpenseId={editedExpenseId}
+        isEditing={isEditing}
+        selectedExpense={selectedExpense}
+      />
       {isEditing && (
         <View style={styles.deleteContainer}>
           <IconButton
@@ -78,15 +68,6 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 24,
     backgroundColor: GlobalStyles.colors.primary800,
-  },
-  button: {
-    minWidth: 120,
-    marginHorizontal: 8,
-  },
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
   },
   deleteContainer: {
     marginTop: 16,
